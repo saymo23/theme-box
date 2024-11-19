@@ -75,32 +75,31 @@ const closeSidebar = () => {
 
 /* Sidebar */
 .sidebar {
+  @apply bg-negro text-white;
   position: fixed;
   top: 0;
   height: 100%;
-  background-color: #eee;
   padding: 1rem;
   box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-  transition: left 0.5s ease;
+  transition: transform 0.5s ease; /* Cambia left por transform para animación */
   overflow-y: auto;
   z-index: 1000;
+  transform: translateX(-100%); /* Oculto por defecto */
+}
+
+/* Sidebar visible cuando está abierto */
+.sidebar.open {
+  transform: translateX(0); /* Se desliza hacia la vista */
 }
 
 /* Ancho del sidebar en móvil */
 .sidebar {
   width: 80%;
-  left: -80%; /* Oculto fuera de la pantalla por defecto en móvil */
-}
-
-/* Sidebar abierto en móvil */
-.sidebar.open {
-  left: 0;
 }
 
 /* Ancho del sidebar en escritorio */
 .sidebar.fixed {
   width: 400px;
-  left: 0;
   box-shadow: none; /* Sin difuminado */
 }
 </style>

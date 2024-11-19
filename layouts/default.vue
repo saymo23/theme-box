@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <button  @click="toggleSidebar">☰</button>
+      <button @click="toggleSidebar">☰</button>
     </header>
 
     <!-- Sidebar -->
@@ -15,19 +15,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import Sidebar from '~/components/Sidebar.vue';
 
 const isSidebarOpen = ref(false);
 const isMobile = ref(false);
 
 const updateIsMobile = () => {
+  const wasMobile = isMobile.value;
   isMobile.value = window.innerWidth < 768;
+
+  // Si pasa de móvil a escritorio, aplica la animación de apertura con retraso
+  if (!isMobile.value && wasMobile) {
+    isSidebarOpen.value = false; // Oculta el sidebar temporalmente
+    setTimeout(() => {
+      isSidebarOpen.value = true; // Aplica la animación de apertura después de un retraso
+    }, 222);
+  }
+
+  // Asegura que el scroll esté habilitado cuando cambia a escritorio
   if (!isMobile.value) {
-    isSidebarOpen.value = true; // Siempre abierto en escritorio
-    document.body.classList.remove('no-scroll'); // Asegura que el scroll esté habilitado
+    document.body.classList.remove('no-scroll');
   } else {
-    isSidebarOpen.value = false;
+    isSidebarOpen.value = false; // Cierra el sidebar en móvil
   }
 };
 
@@ -46,21 +56,28 @@ const closeSidebar = () => {
 onMounted(() => {
   updateIsMobile();
   window.addEventListener('resize', updateIsMobile);
+
+  // Muestra el sidebar en escritorio con un retraso inicial
+  if (!isMobile.value) {
+    setTimeout(() => {
+      isSidebarOpen.value = true;
+    }, 222);
+  }
 });
-
-
 </script>
 
 <style>
-.ibm{
+.ibm {
   font-family: 'IBM Plex Sans';
   font-weight: bold;
 }
 .main-with-sidebar {
-  margin-left: 400px;
+  
 }
 header {
-  @apply fixed top-0 left-0 right-0 z-50 bg-negro text-white flex items-center justify-between;
+  @apply fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-between;
+  backdrop-filter: blur(10px);
+  background-color: rgba(41, 45, 58, 0.9); /* Fondo negro semitransparente */
   padding: 1rem;
 }
 
@@ -73,7 +90,4 @@ button {
 button:hover {
   @apply bg-negro-600;
 }
-
-
-
 </style>

@@ -1,10 +1,16 @@
 <template>
   <div>
-    <h1>Inicio</h1>
+
+    <ImagenSlider />
+
+
+    <h3>heloooo</h3>
   </div>
 </template>
 
 <script setup>
+
+import ImagenSlider from '~/components/ImagenSlider.vue';
 definePageMeta({
   layout: 'default', // Nombre del layout personalizado
 });
