@@ -8,7 +8,7 @@
     <Sidebar :isOpen="isSidebarOpen" @close="closeSidebar" />
 
     <!-- Contenido principal -->
-    <main :class="{ 'main-with-sidebar': !isMobile }">
+    <main >
       <NuxtPage />
     </main>
   </div>
@@ -67,12 +67,12 @@ onMounted(() => {
 </script>
 
 <style>
+body{
+  @apply bg-negro;
+}
 .ibm {
   font-family: 'IBM Plex Sans';
   font-weight: bold;
-}
-.main-with-sidebar {
-  
 }
 header {
   @apply fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-between;

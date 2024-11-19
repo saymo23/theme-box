@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <ImagenSlider />
+    <ImagenSlider :time='5000' />
 
 
     <h3>heloooo</h3>

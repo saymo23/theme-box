@@ -13,11 +13,16 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  time: Number,
+});
 
 // Lista de imágenes para el slider
 const images = [
   '/images/slider/1.jpg',
-  '/images/slider/1.jpg',
+  '/images/slider/2.jpg',
   '/images/slider/1.jpg',
   // Agrega más rutas de imágenes según sea necesario
 ];
@@ -28,8 +33,27 @@ let interval = null;
 const startSlider = () => {
   interval = setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % images.length;
-  }, 3000); // Cambia la imagen cada 3 segundos
+    
+    const slideImages = document.getElementsByClassName('slide-image');
+    
+    // Si volvemos al primer índice, restablecemos la posición
+    if (currentIndex.value === 0) {
+      for (let i = 0; i < slideImages.length; i++) {
+        slideImages[i].style.animation = 'none'; // Detiene la animación temporalmente
+        slideImages[i].style.transform = 'translateX(0)'; // Restablece la posición inicial
+      }
+      
+      // Forzar un "reflow" para que el navegador aplique el cambio
+      // y reiniciar la animación después de un breve retraso
+      setTimeout(() => {
+        for (let i = 0; i < slideImages.length; i++) {
+          slideImages[i].style.animation = ''; // Reactiva la animación
+        }
+      }, 50); // Ajusta el retraso si es necesario
+    }
+  }, props.time); // Cambia la imagen cada 3 segundos
 };
+
 
 const stopSlider = () => {
   clearInterval(interval);
@@ -68,8 +92,8 @@ onUnmounted(() => {
 }
 
 .slide-image {
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 120%;
   right: -200px;
   object-fit: cover;
   position: absolute;
